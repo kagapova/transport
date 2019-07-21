@@ -33,23 +33,7 @@ export class VehiclesComponent implements OnInit {
           position: 'left',
         },
       ]
-    },
-    annotation: {
-      annotations: [
-        {
-          type: 'line',
-          mode: 'horizontal',
-          scaleID: 'y-axis-0',
-          value: 200,
-          borderColor: 'orange',
-          borderWidth: 2,
-          label: {
-            enabled: true,
-            fontColor: 'orange'
-          }
-        }
-      ],
-    },
+    }
   };
   public lineChartColors: Color[] = [];
   public lineChartLegend = false;
@@ -75,7 +59,7 @@ export class VehiclesComponent implements OnInit {
       resp => {
         this.Lables$ = resp['x']['data'];
         for (let i=0; i<resp['series'].length; i++){
-          this.LineData$[i] = {data: resp['series'][i]['data'], label: resp['series'][i]['name']}
+          this.LineData$[i] = {data: resp['series'][i]['data'], label: resp['series'][i]['name'], fill: false}
         }
         this.lineChartLabels = this.Lables$;
         this.lineChartData = this.LineData$;
