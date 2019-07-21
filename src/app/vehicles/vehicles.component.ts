@@ -22,19 +22,6 @@ export class VehiclesComponent implements OnInit {
     { data: [65, 59, 80, 81, 56, 55, 40], label: 'Маршрут 1'  }
   ];
   public lineChartLabels: Label[] = ['Остановка 1', 'Остановка 2', 'Остановка 3', 'Остановка 4', 'Остановка 5', 'Остановка 6', 'Остановка 7'];
-  public lineChartOptions: (ChartOptions & { annotation: any }) = {
-    responsive: true,
-    scales: {
-      // We use this empty structure as a placeholder for dynamic theming.
-      xAxes: [{}],
-      yAxes: [
-        {
-          id: 'y-axis-0',
-          position: 'left',
-        },
-      ]
-    }
-  };
   public lineChartColors: Color[] = [];
   public lineChartLegend = false;
   public lineChartType = 'line';
