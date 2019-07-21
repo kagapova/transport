@@ -13,7 +13,6 @@ import * as pluginAnnotations from 'chartjs-plugin-annotation';
   styleUrls: ['./vehicles.component.scss']
 })
 export class VehiclesComponent implements OnInit {
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
   Lables$ = [];
   LineData$ = [];
   median;
@@ -80,19 +79,6 @@ export class VehiclesComponent implements OnInit {
         this.lineChartLabels = this.Lables$;
         this.lineChartData = this.LineData$;
         this.median = resp['median'];
-        this.lineChartOptions.annotation.anotations.push({
-          type: 'line',
-          mode: 'horizontal',
-          scaleID: 'y-axis-0',
-          value: 505,
-          borderColor: 'green',
-          borderWidth: 4,
-          label: {
-            enabled: true,
-            fontColor: 'orange'
-          }
-        });
-        this.chart.chart.update();
       }
     );
   }
