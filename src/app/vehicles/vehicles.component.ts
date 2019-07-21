@@ -16,6 +16,7 @@ export class VehiclesComponent implements OnInit {
   Lables$ = [];
   LineData$ = [];
   median;
+  descriptions;
   public lineChartPlugins = [pluginAnnotations];
   public lineChartData: ChartDataSets[] = [
     { data: [65, 59, 80, 81, 56, 55, 40], label: 'Маршрут 1'  }
@@ -79,6 +80,7 @@ export class VehiclesComponent implements OnInit {
         this.lineChartLabels = this.Lables$;
         this.lineChartData = this.LineData$;
         this.median = resp['median'];
+        this.descriptions = resp['title'] + " " + resp['description'];
       }
     );
   }
