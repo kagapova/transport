@@ -13,7 +13,7 @@ class RoutesController extends Controller
 
     public function index()
     {
-        $routes = Route::query()->withCount(['buses'])->get();
+        $routes = Route::query()->withCount(['buses'])->take(40)->get();
 
         return $routes;
     }
@@ -30,6 +30,10 @@ class RoutesController extends Controller
 
         $logs = $route->logs()->where('direction', $direction)->get();
         $series = [];
+        $stations = $route->stations()->where('direction', $direction)->get();
+        $series['median'] = ['data' => array_fill(0, count($stations), $route->round_plan),
+            'name' => 'План',
+        ];
         foreach ($logs as $log) {
             $key = $log->bus_id . ':' . $log->round;
             if (empty($series[$key])) {
@@ -43,7 +47,6 @@ class RoutesController extends Controller
             }
             $series[$key]['data'][] = $log->passengers_count + $prev_count;
         }
-        $stations = $route->stations()->where('direction', $direction)->get();
         $data = [
             'title' => $route->title,
             'description' => $route->description,

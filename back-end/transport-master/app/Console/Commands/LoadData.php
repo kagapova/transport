@@ -42,42 +42,25 @@ class LoadData extends Command
      */
     public function handle()
     {
-        $routes = [
-            [
-                'id' => 14569,
-                'title' => 'Автобус А-2',
-                'description' => 'Микрорайон Верхние Печеры - Автовокзал «Щербинки»',
-            ],
-            [
-                'id' => 14567,
-                'title' => 'Автобус А-1',
-                'description' => 'Площадь Минина и Пожарского - Автовокзал «Щербинки»',
-            ],
-            [
-                'id' => 14570,
-                'title' => 'Автобус А-3',
-                'description' => 'Красное Сормово - Площадь Свободы',
-            ],
-            [
-                'id' => 14571,
-                'title' => 'Автобус А-4',
-                'description' => 'Деревня Афонино - Улица Долгополова',
-            ],
-            [
-                'id' => 14514,
-                'title' => 'Автобус Т-4',
-                'description' => 'Площадь Минина и Пожарского - Автовокзал «Щербинки»',
-            ],
-
-        ];
-        foreach ($routes as $item) {
-            /**
-             * @var Route
-             */
-            $item['round_plan'] = mt_rand(3, 6) * 50;
+        $routesData = json_decode(file_get_contents("http://www.maxikarta.ru/nn/transport/query/routes"), true);
+        foreach ($routesData['routes'] as $routeData) {
+            $item = [
+                'title' => $routeData['name'],
+                'description' => str_replace('&mdash;', '-', explode(' ', $routeData['description'], 2)[1]),
+                'start_station_id' => $routeData['station_start'],
+                'end_station_id' => $routeData['station_stop'],
+                'route_id' => $routeData['route_id'],
+                'length' => $routeData['length'],
+                'round_plan' => mt_rand(8, 16) * 50,
+                'type' => strpos($routeData['description'], '<b>трм')!==false ? 'Трамвай' : (
+                strpos($routeData['description'], '<b>трл')!==false ? 'Троллейбус' : (
+                strpos($routeData['description'], '<b>т') !==false ? 'МТ' : 'Автобус'
+                )
+                ),
+            ];
             $route = Route::query()->create($item);
 
-            $url = "http://www.maxikarta.ru/nn/transport/query/stations?route_id={$item['id']}";
+            $url = "http://www.maxikarta.ru/nn/transport/query/stations?route_id={$item['route_id']}";
             $data = json_decode(file_get_contents($url), true);
             $stations = [];
             foreach ($data['stations'] as $station) {
@@ -88,7 +71,7 @@ class LoadData extends Command
             $bus_count = mt_rand(3, 7);
             foreach (range(1, $bus_count) as $i) {
                 $bus = Bus::query()->create([
-                    'number' => 'A11' . $bus_count . 'BT152',
+                    'number' => 'A' . str_pad($route->id, 2, STR_PAD_LEFT) . $i . 'BT152',
                     'description' => 'Bus',
                     'passenger_max' => mt_rand(4, 8) * 10,
                 ]);

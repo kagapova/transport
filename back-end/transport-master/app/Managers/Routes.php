@@ -15,7 +15,7 @@ class Routes
     public static function calculateState(Route $route)
     {
         $data = [];
-        foreach ($route->buses()->with('logs')->get() as $bus) {
+        foreach ($route->buses()->with(['logs', 'route'])->get() as $bus) {
             $data[$bus->id] = Buses::calculateState($bus);
         }
 

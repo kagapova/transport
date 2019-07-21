@@ -30,9 +30,12 @@ class CreateTables extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('description');
+            $table->string('type')->default('Автобус');
             $table->unsignedInteger('start_station_id')->nullable();
             $table->unsignedInteger('end_station_id')->nullable();
             $table->unsignedInteger('round_plan');
+            $table->unsignedInteger('route_id');
+            $table->float('length');
             $table->timestamps();
         });
 
