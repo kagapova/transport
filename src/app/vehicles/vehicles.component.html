@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Номер транспорта</th>
+          <th scope="col">Количество пассажиров за день</th>
+          <th scope="col">Количество рейсов</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let bus of buses$ let i=index" >
+          <td >{{i + 1}}</td>
+          <td>{{bus['number']}}</td>
+          <td >{{bus['passengers_count']}}</td>
+          <td>{{bus['rounds_count']}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 text-center">
+      <h6>Загруженность по маршруту</h6>
+<div class="flex" *ngIf="median">
+<div class="flex-item">
+  <div style="display: block;">
+    <canvas baseChart  height="200"
+            #chart
+            [datasets]="lineChartData"
+            [labels]="lineChartLabels"
+            [options]="lineChartOptions"
+            [colors]="lineChartColors"
+            [legend]="lineChartLegend"
+            [plugins]="lineChartPlugins"
+            [chartType]="lineChartType"
+            *ngIf="median"></canvas>
+  </div>
+</div>
+</div>
+    </div>
+  </div>
+</div>
